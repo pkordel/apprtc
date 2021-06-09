@@ -17,10 +17,10 @@ def _WebTestIsInstalled():
     import webtest
     return True
   except ImportError:
-    print 'You need to install webtest dependencies before you can proceed '
-    print 'running the tests. To do this you need to have pip installed.'
-    print 'Go to https://packaging.python.org/installing/ and follow the '
-    print 'instructions and then rerun the grunt command.'
+    print('You need to install webtest dependencies before you can proceed ')
+    print('running the tests. To do this you need to have pip installed.')
+    print('Go to https://packaging.python.org/installing/ and follow the ')
+    print('instructions and then rerun the grunt command.')
     return False
 
 

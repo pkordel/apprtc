@@ -28,5 +28,5 @@ def RemoveTests(path):
     tests = [name for name in files if _IsPythonTest(name)]
     for test in tests:
       to_remove = os.path.join(dirpath, test)
-      print 'Removing %s.' % to_remove
+      print('Removing %s.' % to_remove)
       os.remove(to_remove)

@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 import tarfile
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 # We are downloading a specific version of the Gcloud SDK because we have not
 # found a URL to fetch the "latest" version.
@@ -20,20 +20,20 @@ TEMP_DIR = 'temp'
 GCLOUD_SDK_PATH = os.path.join(TEMP_DIR, GCLOUD_SDK_INSTALL_FOLDER)
 
 def _Download(url, to):
-  print 'Downloading %s to %s...' % (url, to)
-  request = urllib2.urlopen(url)
+  print('Downloading %s to %s...' % (url, to))
+  request = urllib.request.urlopen(url)
   try:
-    f = urllib2.urlopen(request)
+    f = urllib.request.urlopen(request)
     with open(to, 'wb') as to_file:
       to_file.write(f.read())
-  except urllib2.HTTPError, r:
-    print('Could not download: %s Error: %d. %s' % (
-        to, r.code, r.reason))
+  except urllib.error.HTTPError as r:
+    print(('Could not download: %s Error: %d. %s' % (
+        to, r.code, r.reason)))
     raise
 
 
 def _Extract(file_to_extract_path, destination_path):
-  print 'Extracting %s in %s...' % (file_to_extract_path, destination_path)
+  print('Extracting %s in %s...' % (file_to_extract_path, destination_path))
   with tarfile.open(file_to_extract_path, 'r:gz') as tar_file:
     tar_file.extractall(destination_path)
 
@@ -49,7 +49,7 @@ def _EnsureAppEngineIsInstalled(path_to_gcloud_sdk):
 def _Cleanup(file_paths_to_remove):
   for file_path in file_paths_to_remove:
     if os.path.exists(file_path):
-      print 'Cleaning up %s' % file_path
+      print('Cleaning up %s' % file_path)
       os.remove(file_path)
 
 
@@ -58,7 +58,7 @@ def main():
     os.mkdir(TEMP_DIR)
 
   if os.path.isfile(os.path.join(GCLOUD_SDK_PATH, 'bin', 'gcloud')):
-    print 'Already has %s, skipping the download' % GCLOUD_SDK_INSTALL_FOLDER
+    print('Already has %s, skipping the download' % GCLOUD_SDK_INSTALL_FOLDER)
     _EnsureAppEngineIsInstalled(GCLOUD_SDK_PATH)
     _Cleanup([os.path.join(TEMP_DIR, GCLOUD_SDK_TAR_FILE)])
     return
